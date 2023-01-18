@@ -5,13 +5,13 @@ FROM debian:latest
 LABEL org.opencontainers.image.source="https://github.com/troublescoope/Docker"
 LABEL org.opencontainers.image.description="Docker for Delta-mltb now"
 
-ARG TARGETPLATFORM BUILDPLATFORM
+ARG DEBIAN_FRONTEND=noninteractive
 
 # Upgrade & packages
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    sudo  ca-certificates  netbase \
+    ca-certificates netbase autoconf apt-utils \
     && apt-get clean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
@@ -21,20 +21,24 @@ ENV LC_ALL C.UTF-8
 ENV TZ Asia/Jakarta 
 
 # Install base required packages
-RUN apt-get upgrade -y \
+RUN apt-get update && \
+    apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    git wget curl p7zip-full unzip \
+    git wget curl p7zip-full zip unzip \
     python3 python3-pip python3-venv neofetch \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
 # Install cloudflare tunnel.
 
-RUN echo -e "\e[32m[INFO]: Installing Cloudflared Tunnel.\e[0m" \
-    && case ${TARGETPLATFORM} in \
-    "linux/amd64")  ARCH=amd64  ;; \
-    "linux/arm64")  ARCH=arm64  ;; \
-    "linux/arm/v7") ARCH=arm    ;; \
+ARG TARGETPLATFORM
+ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
+
+RUN echo -e "\e[32m[INFO]: Installing Cloudflared Tunnel.\e[0m" && \
+    case ${TARGETPLATFORM} in \
+         "linux/amd64")  ARCH=amd64  ;; \
+         "linux/arm64")  ARCH=arm64  ;; \
+         "linux/arm/v7") ARCH=arm    ;; \
     esac && \
     wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${ARCH}.deb -O cloudflared-linux-${ARCH}.deb && \
     dpkg -i --force-architecture cloudflared-linux-${ARCH}.deb
