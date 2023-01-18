@@ -3,7 +3,7 @@ FROM debian:latest
 
 # LABEL
 LABEL org.opencontainers.image.source="https://github.com/troublescoope/Docker"
-LABEL org.opencontainers.image.description="Docker for Delta-mltb now"
+LABEL org.opencontainers.image.description="Personal docker base."
 
 ARG DEBIAN_FRONTEND=noninteractive
 
