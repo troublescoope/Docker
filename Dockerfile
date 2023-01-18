@@ -5,6 +5,8 @@ FROM debian:latest
 LABEL org.opencontainers.image.source="https://github.com/troublescoope/Docker"
 LABEL org.opencontainers.image.description="Docker for Delta-mltb now"
 
+ARG TARGETPLATFORM BUILDPLATFORM
+
 # Upgrade & packages
 RUN apt-get update \
     && apt-get upgrade -y \
@@ -27,10 +29,9 @@ RUN apt-get upgrade -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install cloudflare tunnel.
-ARG TARGETPLATFORM BUILDPLATFORM
+
 RUN echo -e "\e[32m[INFO]: Installing Cloudflared Tunnel.\e[0m" \
-    && case 
-    ${TARGETPLATFORM} in \
+    && case ${TARGETPLATFORM} in \
     "linux/amd64")  ARCH=amd64  ;; \
     "linux/arm64")  ARCH=arm64  ;; \
     "linux/arm/v7") ARCH=arm    ;; \
