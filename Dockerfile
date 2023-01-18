@@ -26,6 +26,8 @@ RUN apt-get upgrade -y \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
+# Install cloudflare tunnel.
+ARG TARGETPLATFORM BUILDPLATFORM
 RUN echo -e "\e[32m[INFO]: Installing Cloudflared Tunnel.\e[0m" \
     && case 
     ${TARGETPLATFORM} in \
