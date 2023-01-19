@@ -42,6 +42,7 @@ FROM ghcr.io/troublescoope/docker:latest
 
 RUN apt-get update  && apt-get upgrade -y \
     && apt-get install -y ffmpeg mediainfo aria2 \
+    libmagic-dev \
     qbittorrent-nox && npm install -g localtunnel kill-port \
     && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd
     
