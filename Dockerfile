@@ -1,5 +1,5 @@
 # Os base using own
-FROM ghcr.io/troublescoope/docker:latest AS builder
+FROM ghcr.io/troublescoope/docker:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 # Upgrade & Install mega builder tools
@@ -37,15 +37,10 @@ RUN echo -e "\e[32m[INFO]: Building and Installing MegaSdkC++.\e[0m" && \
 
 RUN pip3 install -r requirements.txt
 
-# Finally 
-FROM ghcr.io/troublescoope/docker:latest
-
 RUN apt-get update  && apt-get upgrade -y \
     && apt-get install -y ffmpeg mediainfo aria2 \
     libmagic-dev \
     qbittorrent-nox && npm install -g localtunnel kill-port \
     && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd
-    
-ENV PATH="/opt/venv/bin:$PATH"
-COPY --from=builder /opt/venv /opt/venv
-CMD ["/bin/bash", "-c"]
+
+CMD ["python3"]
