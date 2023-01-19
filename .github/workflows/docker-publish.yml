@@ -9,11 +9,11 @@ on:
   schedule:
     - cron: '38 0 * * *'
   push:
-    branches: [ "megasdk" ]
+    branches: [ "delta-mltb" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
-    branches: [ "megasdk" ]
+    branches: [ "delta-mltb" ]
 
 env:
   # Use docker.io for Docker Hub if empty
