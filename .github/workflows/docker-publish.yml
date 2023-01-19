@@ -6,8 +6,6 @@ name: Docker
 # documentation.
 
 on:
-  schedule:
-    - cron: '38 0 * * *'
   push:
     branches: [ "delta-mltb" ]
     # Publish semver tags as releases.
