@@ -39,7 +39,7 @@ RUN pip3 install -r requirements.txt
 
 # Finally 
 FROM ghcr.io/troublescoope/docker:latest
-RUN adduser -D delta
+
 RUN apt-get update  && apt-get upgrade -y \
     && apt-get install -y ffmpeg mediainfo aria2 \
     qbittorrent-nox && npm install -g localtunnel kill-port \
@@ -47,5 +47,4 @@ RUN apt-get update  && apt-get upgrade -y \
     
 ENV PATH="/opt/venv/bin:$PATH"
 COPY --from=builder /opt/venv /opt/venv
-USER delta
-SHELL ["/bin/bash", "-c"]
+CMD ["/bin/bash", "-c"]
