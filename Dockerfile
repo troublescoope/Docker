@@ -3,7 +3,7 @@ FROM ghcr.io/troublescoope/docker:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 # Upgrade & Install mega builder tools
-RUN sed -i -e's/ main/ main contrib non-free/g' /etc/apt/sources.list &&
+RUN sed -i -e's/ main/ main contrib non-free/g' /etc/apt/sources.list && \
     apt-get update -y && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
     gcc g++ clang make autoconf parallel pv jq\
