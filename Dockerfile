@@ -24,7 +24,7 @@ ENV TZ Asia/Jakarta
 RUN apt-get update && \
     apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-    git wget curl p7zip-full zip unzip swig\
+    git wget curl p7zip-full zip unzip unrar-free swig \
     python3 python3-dev python3-pip python3-venv neofetch \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
