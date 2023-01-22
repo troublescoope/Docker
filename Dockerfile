@@ -3,13 +3,14 @@ FROM ghcr.io/troublescoope/docker:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 # Upgrade & Install mega builder tools
-RUN apt-get update  && apt-get upgrade -y \
+RUN sed -i -e's/ main/ main contrib non-free/g' /etc/apt/sources.list &&
+    apt-get update -y && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
     gcc g++ clang make autoconf parallel pv jq\
     libcurl4-openssl-dev libsqlite3-dev zlib1g-dev \
     libssl-dev libcrypto++-dev libc-ares-dev \
     libfreeimage-dev libraw-dev libsodium-dev \
-    libudev-dev automake libtool python3-dev swig
+    libudev-dev automake libtool python3-dev p7zip-rar
 
 # Set working dir 
 RUN mkdir -p /opt/venv
