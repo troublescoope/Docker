@@ -25,7 +25,7 @@ RUN pip3 install wheel
 
 ENV PYTHONWARNINGS=ignore
 RUN echo -e "\e[32m[INFO]: Building and Installing MegaSdkC++.\e[0m" && \
-    git clone https://github.com/meganz/sdk.git ~/home/sdk && \
+    git clone -b release/v4.8.0 https://github.com/meganz/sdk.git ~/home/sdk && \
     cd ~/home/sdk && rm -rf .git && \
     autoupdate -fIv && ./autogen.sh && \
     ./configure CFLAGS='-fpermissive' CXXFLAGS='-fpermissive' CPPFLAGS='-fpermissive' CCFLAGS='-fpermissive' \
