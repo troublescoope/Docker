@@ -31,17 +31,17 @@ RUN apt-get update && \
 
 # Install cloudflare tunnel.
 
-ARG TARGETPLATFORM
-ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
+#ARG TARGETPLATFORM
+#ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
 
-RUN echo -e "\e[32m[INFO]: Installing Cloudflared Tunnel.\e[0m" && \
-    case ${TARGETPLATFORM} in \
-         "linux/amd64")  ARCH=amd64  ;; \
-         "linux/arm64")  ARCH=arm64  ;; \
-         "linux/arm/v7") ARCH=arm    ;; \
-    esac && \
-    wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${ARCH}.deb -O cloudflared-linux-${ARCH}.deb && \
-    dpkg -i --force-architecture cloudflared-linux-${ARCH}.deb
+#RUN echo -e "\e[32m[INFO]: Installing Cloudflared Tunnel.\e[0m" && \
+#    case ${TARGETPLATFORM} in \
+#         "linux/amd64")  ARCH=amd64  ;; \
+#         "linux/arm64")  ARCH=arm64  ;; \
+#         "linux/arm/v7") ARCH=arm    ;; \
+#    esac && \
+#    wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${ARCH}.deb -O cloudflared-linux-${ARCH}.deb && \
+#    dpkg -i --force-architecture cloudflared-linux-${ARCH}.deb
 
 # Installing Nodejs
 RUN mkdir /usr/local/nvm
