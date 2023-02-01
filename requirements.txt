@@ -17,7 +17,7 @@ google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
 gunicorn
-lk21
+git+https://github.com/zevtyardt/lk21
 lxml
 markdown
 mediainfo
