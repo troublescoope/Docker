@@ -41,4 +41,4 @@ urllib3
 waybackpy
 xattr
 yt-dlp
-
+pyrate_limiter
