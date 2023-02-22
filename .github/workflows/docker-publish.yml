@@ -19,7 +19,7 @@ on:
 env:
   # Use ghcr.io for container registry
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository | tolower }}
+  IMAGE_NAME: troublescope/docker
 
 jobs:
   build:
