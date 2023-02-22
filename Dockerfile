@@ -1,5 +1,5 @@
 # Os base using own
-FROM ghcr.io/troublescope/docker:latest
+FROM --platform=$BUILDPLATFORM ghcr.io/troublescope/docker:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 # Upgrade & Install mega builder tools
