@@ -25,7 +25,7 @@ RUN apt-get update && \
     apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
     git wget curl p7zip-full swig \
-    python3 python3-dev python3-pip python3-venv neofetch \
+    python3.11 python3-dev python3-pip python3-venv neofetch \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/*
 
