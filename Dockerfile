@@ -39,7 +39,7 @@ RUN apt-get update -y \
 RUN cd /usr/src \
     && wget https://www.python.org/ftp/python/3.11.2/Python-3.11.2.tgz \
     && tar -xzf Python-3.11.2.tgz \
-    && cd Python-3.11.0 \
+    && cd Python-3.11.2 \
     && ./configure --enable-optimizations \
     && make altinstall
     
