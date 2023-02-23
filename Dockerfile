@@ -21,27 +21,28 @@ ENV LC_ALL C.UTF-8
 ENV TZ Asia/Jakarta 
 
 # Install base required packages
-RUN apt-get update && \
-    apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends \
-    git wget curl p7zip-full swig \
-    python3.11 python3-dev python3-pip python3-venv neofetch \
-    && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -y \
+    && apt-get upgrade -y \
+    && apt-get -y install build-essential \
+        zlib1g-dev \
+        libncurses5-dev \
+        libgdbm-dev \ 
+        libnss3-dev \
+        libssl-dev \
+        libreadline-dev \
+        libffi-dev \
+        libsqlite3-dev \
+        libbz2-dev \
+        wget \
+    && apt-get purge -y imagemagick imagemagick-6-common 
 
-# Install cloudflare tunnel.
-
-#ARG TARGETPLATFORM
-#ENV TARGETPLATFORM=${TARGETPLATFORM:-linux/amd64}
-
-#RUN echo -e "\e[32m[INFO]: Installing Cloudflared Tunnel.\e[0m" && \
-#    case ${TARGETPLATFORM} in \
-#         "linux/amd64")  ARCH=amd64  ;; \
-#         "linux/arm64")  ARCH=arm64  ;; \
-#         "linux/arm/v7") ARCH=arm    ;; \
-#    esac && \
-#    wget -q https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${ARCH}.deb -O cloudflared-linux-${ARCH}.deb && \
-#    dpkg -i --force-architecture cloudflared-linux-${ARCH}.deb
+RUN cd /usr/src \
+    && wget https://www.python.org/ftp/python/3.11.2/Python-3.11.2.tgz \
+    && tar -xzf Python-3.11.2.tgz \
+    && cd Python-3.11.0 \
+    && ./configure --enable-optimizations \
+    && make altinstall
+    
 
 # Installing Nodejs
 RUN mkdir /usr/local/nvm
@@ -52,6 +53,9 @@ RUN curl https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash 
     && nvm install $NODE_VERSION \
     && nvm alias default $NODE_VERSION \
     && nvm use default
+
+# update alternative for using python 
+RUN update-alternatives --install /usr/bin/python python /usr/local/bin/python3.11 1
 
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
