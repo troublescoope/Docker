@@ -24,6 +24,7 @@ ENV TZ Asia/Jakarta
 RUN apt-get update -y \
     && apt-get upgrade -y \
     && apt-get -y install build-essential \
+        curl \
         zlib1g-dev \
         libncurses5-dev \
         libgdbm-dev \ 
