@@ -1,86 +1,47 @@
-# First stage: Build stage
-FROM python:3.11-alpine AS builder
+# Os base using own
+FROM --platform=$BUILDPLATFORM ghcr.io/troublescope/docker:latest
 
-RUN apk add --no-cache \
-    gcc \
-    musl-dev \
-    libffi-dev \
-    openssl-dev \
-    python3-dev \
-    py3-pip \
-    git \
-    build-base \
-    autoconf \
-    automake \
-    libtool \
-    libc-dev \
-    make \
-    cmake \
-    zlib-dev \
-    libcrypto1.1 \
-    libcurl \
-    libcurl-dev \
-    libsodium-dev \
-    libressl-dev \
-    libc-ares-dev \
-    libfreeimage-dev \
-    libraw-dev
+ARG DEBIAN_FRONTEND=noninteractive
+# Upgrade & Install mega builder tools
+RUN sed -i -e's/ main/ main contrib non-free/g' /etc/apt/sources.list && \
+    apt-get update -y && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends \
+    gcc g++ clang make autoconf parallel pv jq\
+    libcurl4-openssl-dev libsqlite3-dev zlib1g-dev \
+    libssl-dev libcrypto++-dev libc-ares-dev \
+    libfreeimage-dev libraw-dev libsodium-dev \
+    libudev-dev automake libtool python3-dev p7zip-rar
 
-WORKDIR /app
+# Set working dir 
+RUN mkdir -p /opt/venv
+WORKDIR /opt/venv
+RUN python3 -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
+# Install dependencies 
 COPY requirements.txt .
+RUN pip install --upgrade pip
+RUN pip3 install wheel
 
-RUN python3 -m venv venv \
-    && venv/bin/pip install --upgrade pip \
-    && venv/bin/pip install wheel \
-    && venv/bin/pip install -r requirements.txt \
-    && venv/bin/pip wheel --wheel-dir=./wheels -r requirements.txt
+ENV PYTHONWARNINGS=ignore
+RUN echo -e "\e[32m[INFO]: Building and Installing MegaSdkC++.\e[0m" && \
+    git clone -b release/v4.8.0 https://github.com/meganz/sdk.git ~/home/sdk && \
+    cd ~/home/sdk && rm -rf .git && \
+    autoupdate -fIv && ./autogen.sh && \
+    ./configure CFLAGS='-fpermissive' CXXFLAGS='-fpermissive' CPPFLAGS='-fpermissive' CCFLAGS='-fpermissive' \
+    --disable-silent-rules --enable-python --with-sodium --disable-examples --with-python3 && \
+    make -j$(nproc --all) && \
+    cd bindings/python/ && \
+    python3 setup.py bdist_wheel && \
+    cd dist && ls && \
+    pip3 install *.whl
 
-RUN git clone -b release/v4.8.0 https://github.com/meganz/sdk.git \
-    && cd sdk \
-    && autoupdate -fIv \
-    && ./autogen.sh \
-    && ./configure CFLAGS='-fpermissive' CXXFLAGS='-fpermissive' CPPFLAGS='-fpermissive' CCFLAGS='-fpermissive' --disable-silent-rules --enable-python --with-sodium --disable-examples --with-python3 \
-    && make -j$(nproc) \
-    && cd bindings/python \
-    && python3 setup.py bdist_wheel \
-    && cp dist/*.whl /app/wheels \
-    && cd /app \
-    && rm -rf sdk
+RUN pip3 install -r requirements.txt
 
-# Second stage: Production stage
-FROM python:3.11-alpine
-
-RUN apk add --no-cache \
-    libffi \
-    openssl \
-    ca-certificates \
-    ffmpeg \
-    mediainfo \
-    aria2 \
-    libmagic \
-    qbittorrent-nox \
-    nodejs \
-    npm \
-    && npm install -g localtunnel kill-port
-
-WORKDIR /app
-
-COPY --from=builder /app/venv /app/venv
-COPY --from=builder /app/wheels /app/wheels
-COPY --from=builder /app/requirements.txt .
-
-RUN python3 -m venv venv \
-    && venv/bin/pip install --upgrade pip \
-    && venv/bin/pip install wheel \
-    && venv/bin/pip install --no-index --find-links=./wheels -r requirements.txt \
-    && rm -rf ./wheels
+RUN apt-get update  && apt-get upgrade -y \
+    && apt-get install -y ffmpeg mediainfo aria2 \
+    libmagic-dev \
+    qbittorrent-nox && npm install -g localtunnel kill-port \
+    && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd
 
 CMD ["python3"]
-
-# Support multiarch
-# linux/amd64
-# linux/arm64
-# linux/arm/v7
-# Reference: https://docs.docker.com/buildx/working-with-buildx/
-# Run command: docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t your-image-name .
