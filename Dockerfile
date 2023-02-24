@@ -77,3 +77,10 @@ RUN python3 -m venv venv \
     && rm -rf ./wheels
 
 CMD ["python3"]
+
+# Support multiarch
+# linux/amd64
+# linux/arm64
+# linux/arm/v7
+# Reference: https://docs.docker.com/buildx/working-with-buildx/
+# Run command: docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t your-image-name .
