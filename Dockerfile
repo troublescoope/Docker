@@ -1,7 +1,7 @@
 # Os base using Debian latest
 FROM debian:latest
 
-# LABEL
+# LABELS 
 LABEL org.opencontainers.image.source="https://github.com/troublescoope/Docker"
 LABEL org.opencontainers.image.description="Personal docker base."
 
