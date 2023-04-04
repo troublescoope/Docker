@@ -41,7 +41,15 @@ RUN pip3 install -r requirements.txt
 RUN apt-get update  && apt-get upgrade -y \
     && apt-get install -y ffmpeg mediainfo aria2 \
     libmagic-dev \
-    qbittorrent-nox && npm install -g localtunnel kill-port \
+    && npm install -g localtunnel kill-port \
     && sed -i -e "s/bin\/ash/bin\/bash/" /etc/passwd
+
+# Add qBittorrent Enhanced Nox repository
+RUN echo 'deb http://download.opensuse.org/repositories/home:/nikoneko:/test/Debian_11/ /' | tee /etc/apt/sources.list.d/home:nikoneko:test.list \
+    && curl -fsSL https://download.opensuse.org/repositories/home:nikoneko:test/Debian_11/Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/home_nikoneko_test.gpg > /dev/null \
+    && apt-get update
+
+# Install qBittorrent Enhanced Nox
+RUN apt-get install -y qbittorrent-enhanced-nox
 
 CMD ["python3"]
