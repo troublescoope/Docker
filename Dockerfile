@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # LABELS
-LABEL org.opencontainers.image.source="https://github.com/troublescoope/Docker"
+LABEL org.opencontainers.image.source="https://github.com/troublescope/Docker"
 LABEL org.opencontainers.image.description="Personal docker base."
 
 # Upgrade & packages
