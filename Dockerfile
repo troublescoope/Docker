@@ -8,7 +8,8 @@ LABEL org.opencontainers.image.description="Personal docker base."
 # Upgrade & packages
 RUN apk update && apk upgrade && \
     apk add --no-cache ca-certificates autoconf bash git wget curl p7zip swig \
-    python3 python3-dev python3-pip python3-venv neofetch tzdata
+    python3 python-dev python-pip python-venv neofetch tzdata
+    && echo python -V
 
 # Set environment variables
 ENV LC_ALL C.UTF-8
