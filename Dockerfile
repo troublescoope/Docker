@@ -15,4 +15,4 @@ RUN apk update && apk upgrade && \
 ENV LC_ALL C.UTF-8
 ENV TZ Asia/Jakarta
 
-SHELL ["/bin/bash", "neofetch"]
+SHELL ["/bin/bash", '-c"]
