@@ -3,7 +3,6 @@ FROM --platform=$BUILDPLATFORM ghcr.io/troublescope/docker:latest
 
 # Set build arguments
 ARG BUILDPLATFORM
-ENV VENV_PATH="/venv/bin"
 
 # Set working directory
 WORKDIR /usr/src/app
@@ -49,7 +48,7 @@ RUN git clone -b release/v4.8.0 https://github.com/meganz/sdk.git ~/home/sdk && 
     cd bindings/python/ && \
     python3 setup.py bdist_wheel && \
     cd dist && ls && \
-    pip install *.whl
+    pip3 install *.whl
     
 
 # Run Final Apk Update
@@ -62,4 +61,4 @@ RUN echo 'export LC_ALL=en_US.UTF-8' >> /etc/profile.d/locale.sh && \
     cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
 # Set shell to bash
-SHELL ["/bin/bash", "-c", "source /$VENV_PATH/activate && $0 $@"]
+SHELL ["/bin/bash", "-c"]
