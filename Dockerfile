@@ -3,7 +3,7 @@ FROM --platform=$BUILDPLATFORM ghcr.io/troublescope/docker:latest
 
 # Set build arguments
 ARG BUILDPLATFORM
-ENV PATH="/venv/bin:$PATH"
+ENV VENV_PATH="/venv/bin"
 
 # Set working directory
 WORKDIR /usr/src/app
@@ -62,8 +62,4 @@ RUN echo 'export LC_ALL=en_US.UTF-8' >> /etc/profile.d/locale.sh && \
     cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
 # Set shell to bash
-SHELL ["/bin/bash", "-c"]
-
-# Copy venv
-RUN cp -r /venv /venv_megasdk
-RUN mkdir /venv_megasdk
+SHELL ["/bin/bash", "-c", "source /$VENV_PATH/activate && $0 $@"]
