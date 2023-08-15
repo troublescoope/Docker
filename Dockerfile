@@ -47,7 +47,10 @@ RUN git clone -b release/v4.8.0 https://github.com/meganz/sdk.git ~/home/sdk && 
     make -j$(nproc --all) && \
     cd bindings/python/ && \
     python3 setup.py bdist_wheel && \
-    cd dist && ls && \
+    cd dist && ls && mkdir /venv && python3 -m venv /venv && \
+    source /venv/bin/activate && \
+    pip install --no-cache-dir *.whl && \
+    deactivate \
     pip3 install *.whl
     
 
