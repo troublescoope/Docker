@@ -4,15 +4,15 @@ on:
   schedule:
     - cron: '38 0 * * *'
       branches:
-        - delta-mltb
+        - latest
   push:
     branches:
-      - delta-mltb
+      - latest
     tags: 
       - 'v*.*.*'
   pull_request:
     branches:
-      - delta-mltb
+      - latest
 
 env:
   REGISTRY: ghcr.io
