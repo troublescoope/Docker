@@ -69,7 +69,7 @@ CMD ["bash"]
 
 ## Credits
 
-This Dockerfile is based on the work by [Troubleccope](https://github.com/troubleccope), available at [GitHub Repository](https://github.com/troubleccope/Docker.git).
+This Dockerfile is based on the work by [Troublescope](https://github.com/troublescope), available at [GitHub Repository](https://github.com/troubleccope/Docker.git).
 
 ## Feedback and Contributions
 
