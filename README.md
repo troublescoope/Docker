@@ -50,10 +50,6 @@ To utilize Aria2 and qBittorrent within your Docker environment:
 
    This will initiate a download using Aria2.
 
-## Example Tutorial
-
-For a detailed example tutorial on building applications with MegaSdkC++, managing downloads using Aria2, and using qBittorrent within the Docker environment, refer to the [Tutorial.md](Tutorial.md) file.
-
 ## Dockerfile
 
 Here's a simplified version of the Dockerfile used to create this image:
