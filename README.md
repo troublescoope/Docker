@@ -1,3 +1,4 @@
+[![Docker](https://github.com/troublescope/Docker/actions/workflows/docker-publish.yml/badge.svg?branch=delta-mltb)](https://github.com/troublescope/Docker/actions/workflows/docker-publish.yml)
 
 # Docker Image with MegaSdkC++, Aria2, and qBittorrent
 
