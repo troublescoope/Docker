@@ -81,8 +81,6 @@ LABEL description="Docker image for running an application with MegaSdkC++"
 LABEL version="1.0"
 LABEL release-date="2023-08-20"
 
-ENV TZ=Asia/Jakarta
-
 # Update and install mandatory packages
 RUN apk update && apk upgrade && \
     apk add --upgrade --no-cache \
@@ -128,12 +126,10 @@ RUN cd /home/sdk/bindings/python && \
     python3 setup.py bdist_wheel && \
     cd dist && pip install --no-cache-dir *.whl
 
-# Set locale and timezone
+# Set locale
 RUN echo 'export LC_ALL=en_US.UTF-8' >> /etc/profile.d/locale.sh && \
     sed -i 's|LANG=C.UTF-8|LANG=en_US.UTF-8|' /etc/profile.d/locale.sh && \
-    cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && \
-    echo "Asia/Jakarta" > /etc/timezone
-
+    
 # Set shell to Bash
 SHELL ["/bin/bash", "-c"]
 
