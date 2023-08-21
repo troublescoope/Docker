@@ -128,7 +128,7 @@ RUN cd /home/sdk/bindings/python && \
 
 # Set locale
 RUN echo 'export LC_ALL=en_US.UTF-8' >> /etc/profile.d/locale.sh && \
-    sed -i 's|LANG=C.UTF-8|LANG=en_US.UTF-8|' /etc/profile.d/locale.sh && \
+    sed -i 's|LANG=C.UTF-8|LANG=en_US.UTF-8|' /etc/profile.d/locale.sh
     
 # Set shell to Bash
 SHELL ["/bin/bash", "-c"]
