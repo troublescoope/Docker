@@ -24,8 +24,6 @@ RUN apk update && apk upgrade && \
         crypto++-dev \
         curl \
         curl-dev \
-        ffmpeg \
-        freeimage-dev \
         g++ \
         gcc \
         gawk \
@@ -69,7 +67,7 @@ RUN git clone --depth=1 -b release/v4.8.0 https://github.com/meganz/sdk.git /hom
     cd /home/sdk && rm -rf .git && \
     autoupdate -fIv && ./autogen.sh && \
     ./configure CFLAGS='-fpermissive' CXXFLAGS='-fpermissive' CPPFLAGS='-fpermissive' CCFLAGS='-fpermissive' \
-    --disable-silent-rules --enable-python --with-sodium --disable-examples --with-python3 && \
+    --disable-silent-rules --enable-python --with-sodium --disable-examples --with-python3 --without-freeimage && \
     make -j$(nproc --all)
 
 
@@ -89,7 +87,6 @@ RUN apk update && apk upgrade && \
         ca-certificates \
         curl \
         ffmpeg \
-        freeimage-dev \
         crypto++-dev \
         curl-dev \
         gcc \
