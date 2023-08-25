@@ -1,5 +1,5 @@
 # Use a specific base image
-FROM python:3.11-alpine as build
+FROM python:3.11-alpine as build_mega_sdk
 
 
 # Set working directory
