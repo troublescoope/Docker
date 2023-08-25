@@ -70,18 +70,30 @@ RUN git clone --depth=1 -b release/v4.8.0 https://github.com/meganz/sdk.git /hom
     --disable-silent-rules --enable-python --with-sodium --disable-examples --with-python3 --without-freeimage && \
     make -j$(nproc --all)
 
+# Stage 2: Install Playwright
+FROM node:18-alpine as install_playwright
 
-# Stage 2: Install Packages and MegaSdkC++
+# Instal Playwright
+RUN npm install -g playwright
+
+# Stage 3: Install Chromium for Playwright
+FROM alpine:3.18 as install_chromium
+
+RUN apk upgrade --no-cache --available && \
+    apk add --no-cache \
+        chromium-swiftshader \
+        ttf-freefont \
+        font-noto-emoji && \
+    apk add --no-cache \
+        --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing \
+        font-wqy-zenhei
+
+# Stage 4: Combine components
 FROM python:3.11-alpine
 
-LABEL maintaer="Troublescope <tomy.prs25@gmail.com>"
-LABEL description="Docker image for running an application with MegaSdkC++"
-LABEL version="1.0"
-LABEL release-date="2023-08-20"
-
-# Update and install mandatory packages
-RUN apk update && apk upgrade && \
-    apk add --upgrade --no-cache \
+# Install required packages
+RUN apk update && apk upgrade --no-cache && \
+    apk add --no-cache \
         aria2 \
         bash \
         ca-certificates \
@@ -114,14 +126,23 @@ RUN apk update && apk upgrade && \
         zip \
         zlib-dev
 
-# Setup working directory
-WORKDIR /app/
-
-# Copy MegaSdkC++ from stage 1
-COPY --from=build /home/sdk/ /home/sdk/
+# Copy MegaSdkC++ from build_mega_sdk
+COPY --from=build_mega_sdk /home/sdk/ /home/sdk/
 RUN cd /home/sdk/bindings/python && \
     python3 setup.py bdist_wheel && \
     cd dist && pip install --no-cache-dir *.whl
+
+# Copy Playwright from install_playwright
+COPY --from=install_playwright /usr/local/bin/playwright /usr/local/bin/playwright
+COPY --from=install_playwright /usr/local/lib/node_modules/playwright /usr/local/lib/node_modules/playwright
+
+# Copy Chromium from install_chromium
+COPY --from=install_chromium /usr/bin/chromium-browser /usr/bin/chromium-browser
+COPY --from=install_chromium /usr/lib/chromium /usr/lib/chromium
+
+# Set environment variables for Chromium
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+    CHROME_PATH=/usr/lib/chromium/
 
 # Set locale
 RUN echo 'export LC_ALL=en_US.UTF-8' >> /etc/profile.d/locale.sh && \
@@ -133,5 +154,5 @@ RUN ln -snf /usr/share/zoneinfo/UTC /etc/localtime && echo UTC > /etc/timezone
 # Set shell to Bash
 SHELL ["/bin/bash", "-c"]
 
-# Default command 
+# Default command
 CMD ["bash"]
