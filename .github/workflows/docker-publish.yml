@@ -4,7 +4,7 @@ on:
   schedule:
     - cron: '38 0 * * *'
       branches:
-        - latest
+        - playwright
   push:
     branches:
       - latest
