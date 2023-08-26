@@ -7,12 +7,12 @@ on:
         - playwright
   push:
     branches:
-      - latest
+      - playwright
     tags: 
       - 'v*.*.*'
   pull_request:
     branches:
-      - latest
+      - playwright
 
 env:
   REGISTRY: ghcr.io
