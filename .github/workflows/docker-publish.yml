@@ -4,15 +4,15 @@ on:
   schedule:
     - cron: '38 0 * * *'
       branches:
-        - main
+        - focal
   push:
     branches:
-      - main
+      - focal
     tags: 
       - 'v*.*.*'
   pull_request:
     branches:
-      - main
+      - focal
 
 env:
   REGISTRY: ghcr.io
