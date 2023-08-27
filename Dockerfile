@@ -48,6 +48,7 @@ RUN apt-get update && \
         libssl-dev \
         parallel \
         python3-dev \
+        python3-distutils \
         libsqlite3-dev \
         swig \
         wget \
