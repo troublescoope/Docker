@@ -3,7 +3,7 @@ FROM ubuntu:22.04 as build_mega_sdk
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=Asia/Jakarta
+    TZ=Asia/Jakarta \
     PYTHONWARNINGS=ignore
 
 # Set working directory
