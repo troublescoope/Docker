@@ -48,6 +48,8 @@ RUN apt-get update && \
         musl-dev \
         libssl-dev \
         parallel \
+        python3 \
+        python3-apt \
         python3-dev \
         python3-setuptools \
         libsqlite3-dev \
