@@ -91,6 +91,7 @@ RUN apk update && apk upgrade && \
         curl-dev \
         gcc \
         git \
+        gzip \
         jq \
         libc-dev \
         libmagic \
@@ -100,6 +101,7 @@ RUN apk update && apk upgrade && \
         openssl-dev \
         parallel \
         p7zip \
+        7zip \
         py3-setuptools \
         py3-wheel \
         python3-dev \
